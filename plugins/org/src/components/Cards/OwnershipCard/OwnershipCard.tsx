@@ -25,7 +25,7 @@ import {
   Switch,
   Tooltip,
 } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ComponentsGrid } from './ComponentsGrid';
 import { EntityRelationAggregation } from './types';
 
@@ -71,9 +71,17 @@ export const OwnershipCard = (props: {
     hideRelationsToggle === undefined ? false : hideRelationsToggle;
   const classes = useStyles();
   const { entity } = useEntity();
-  const [getRelationsType, setRelationsType] = useState(
-    relationsType || 'direct',
+
+  const defaultRelationsType = entity.kind === 'User' ? 'aggregated' : 'direct';
+  const [derivedRelationsType, setRelationsType] = useState(
+    relationsType ?? defaultRelationsType,
   );
+
+  useEffect(() => {
+    if (!relationsType) {
+      setRelationsType(defaultRelationsType);
+    }
+  }, [setRelationsType, entity, defaultRelationsType, relationsType]);
 
   return (
     <InfoCard title="Ownership" variant={variant}>
@@ -89,17 +97,19 @@ export const OwnershipCard = (props: {
                 placement="top"
                 arrow
                 title={`${
-                  getRelationsType === 'direct' ? 'Direct' : 'Aggregated'
+                  derivedRelationsType === 'direct' ? 'Direct' : 'Aggregated'
                 } Relations`}
               >
                 <Switch
                   color="primary"
-                  checked={getRelationsType !== 'direct'}
-                  onChange={() =>
-                    getRelationsType === 'direct'
-                      ? setRelationsType('aggregated')
-                      : setRelationsType('direct')
-                  }
+                  checked={derivedRelationsType !== 'direct'}
+                  onChange={() => {
+                    const updatedRelationsType =
+                      derivedRelationsType === 'direct'
+                        ? 'aggregated'
+                        : 'direct';
+                    setRelationsType(updatedRelationsType);
+                  }}
                   name="pin"
                   inputProps={{ 'aria-label': 'Ownership Type Switch' }}
                 />
@@ -112,7 +122,7 @@ export const OwnershipCard = (props: {
       <ComponentsGrid
         entity={entity}
         entityLimit={entityLimit}
-        relationsType={getRelationsType}
+        relationsType={derivedRelationsType}
         entityFilterKind={entityFilterKind}
       />
     </InfoCard>
