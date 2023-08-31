@@ -1,5 +1,22 @@
 # @backstage/plugin-code-coverage-backend
 
+## 0.2.17-next.2
+
+### Patch Changes
+
+- 91ccb56fb418: Replace `express-xml-bodyparser` with `body-parser-xml`.
+
+  `express-xml-bodyparser` was last updated 8 years ago
+  and currently depends on a version of `xml2js` which
+  contains a vulnerability.
+
+  This change will swap it out in favor of `body-parser-xml`
+  which is more maintained and depends on a more recent `xml2js`
+  version without the vulnerability.
+
+- Updated dependencies
+  - @backstage/backend-common@0.19.5-next.2
+
 ## 0.2.17-next.1
 
 ### Patch Changes

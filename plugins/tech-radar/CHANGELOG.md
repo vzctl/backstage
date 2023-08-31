@@ -1,5 +1,11 @@
 # @backstage/plugin-tech-radar
 
+## 0.6.8-next.2
+
+### Patch Changes
+
+- b45d0ac68191: Add names to blip entry links in the radar to improve accessibility
+
 ## 0.6.8-next.1
 
 ### Patch Changes
